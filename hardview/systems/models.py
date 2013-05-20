@@ -27,7 +27,7 @@ class Computer(models.Model):
     processor = models.CharField(max_length=50)
     formfactor = models.CharField(max_length=50, choices=FORM_FACTORS)
     nprocessors = models.PositiveIntegerField()
-    memCapacity = models.IntegerField(blank=True)
+    memCapacity = models.IntegerField(blank=True, null=True)
     nPciSlots = models.IntegerField()
 
     def __unicode__(self):
@@ -49,4 +49,7 @@ class PciDevice(models.Model):
     pcidevice = models.CharField(max_length=4)
     pcisubvendor = models.CharField(max_length=4, blank=True)
     pcisubdevice = models.CharField(max_length=4, blank=True)
+    
+    def __unicode__(self):
+        return "{} {}".format(self.vendor.name, self.name)
     
