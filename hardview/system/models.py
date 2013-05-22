@@ -6,9 +6,9 @@ class Vendor(models.Model):
     def __unicode__(self):
         return self.name
     
-class Computer(models.Model):
-    """The computer class describes a product, but not a specific instance of that
-    product.  Therefore, there are no instance-specific fields like  memory quantity,
+class System(models.Model):
+    """Describes a product, but not a specific instance of that product.  
+    Therefore, there are no instance-specific fields like  memory quantity,
     serial number, or SKU.
     """
     FORM_FACTORS = (
@@ -43,7 +43,7 @@ class PciDevice(models.Model):
         )
     vendor = models.ForeignKey(Vendor)
     name = models.CharField(max_length=50)
-    computer = models.ManyToManyField(Computer)
+    system = models.ManyToManyField(System)
     removable = models.BooleanField()
     pcivendor = models.CharField(max_length=4)
     pcidevice = models.CharField(max_length=4)
