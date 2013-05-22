@@ -1,7 +1,11 @@
-# urls needed: add, <vendor>, <vendor>/<model
-from django.conf.urls import patterns, include, url
-from systems.views import list_all
+from django.conf.urls.defaults import *
+from django.views.generic import list_detail
+from systems.models import Computer
+
+computer_info = {
+    'queryset': Computer.objects.all(),
+}
 
 urlpatterns = patterns('',
-    url(r'^$', list_all),
+    (r'^$', list_detail.object_list, computer_info)
 )
