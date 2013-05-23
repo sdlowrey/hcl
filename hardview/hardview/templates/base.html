@@ -2,13 +2,18 @@
 <html lang="en">
 <head>
     <title>{% block title %}{% endblock %}</title>
+	<style type = "text/css">
+    table, td, th {
+      border: 2px solid black;
+    } 
+    </style>
 </head>
 <body>
     <h1>HardView</h1>
     {% block content %}{% endblock %}
     {% block footer %}
     <hr>
-    <p>Thanks for visiting my site.</p>
+    <div><em>Rock on daddy.</em></div>
     {% endblock %}
 </body>
 </html>

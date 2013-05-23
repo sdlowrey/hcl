@@ -6,7 +6,15 @@ class Vendor(models.Model):
     def __unicode__(self):
         return self.name
     
-class System(models.Model):
+class Hardware(models.Model):
+    vendor = models.ForeignKey(Vendor)
+    product = models.CharField(max_length=50)
+    endOfLife = models.BooleanField()
+
+    def __unicode__(self):
+        return "{} {}".format(self.vendor.name, self.product)
+
+class System(Hardware):
     """Describes a product, but not a specific instance of that product.  
     Therefore, there are no instance-specific fields like  memory quantity,
     serial number, or SKU.
@@ -21,19 +29,12 @@ class System(models.Model):
         ('rack4u', '4U Rack Server'),
         ('other', 'Other Form Factor'),
         )
-    vendor = models.ForeignKey(Vendor)
-    name = models.CharField(max_length=50)
-
     processor = models.CharField(max_length=50)
-    formfactor = models.CharField(max_length=50, choices=FORM_FACTORS)
-    nprocessors = models.PositiveIntegerField()
-    memCapacity = models.IntegerField(blank=True, null=True)
-    nPciSlots = models.IntegerField()
+    formFactor = models.CharField(max_length=50, choices=FORM_FACTORS)
+    expandable = models.BooleanField()
 
-    def __unicode__(self):
-        return "{} {}".format(self.vendor.name, self.name)
 
-class PciDevice(models.Model):
+class PciDevice(Hardware):
     SIMPLE_TYPES = (    
         ('video', 'Video Controller'),
         ('network', 'Network Interface'),
@@ -41,15 +42,11 @@ class PciDevice(models.Model):
         ('storage', 'Storage/RAID Controller'),
         ('usb', 'USB Host Controller'),
         )
-    vendor = models.ForeignKey(Vendor)
-    name = models.CharField(max_length=50)
     system = models.ManyToManyField(System)
     removable = models.BooleanField()
-    pcivendor = models.CharField(max_length=4)
-    pcidevice = models.CharField(max_length=4)
-    pcisubvendor = models.CharField(max_length=4, blank=True)
-    pcisubdevice = models.CharField(max_length=4, blank=True)
     
-    def __unicode__(self):
-        return "{} {}".format(self.vendor.name, self.name)
+    pciVendor = models.CharField(max_length=4)
+    pciDevice = models.CharField(max_length=4)
+    pciSubvendor = models.CharField(max_length=4, blank=True)
+    pciSubdevice = models.CharField(max_length=4, blank=True)
     

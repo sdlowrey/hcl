@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+HardView - Certified Hardware 
+{% endblock %}
+
+{% block content %}
+
+    <h2>Certified Hardware</h2>
+    <table>
+    <tr>
+    	<th>System</th>
+    	<th>Software</th>
+    	<th>Status</th>
+    </tr>
+    {% for cert in object_list %}
+    <tr>
+    	<td>{{ cert.system.vendor }} {{ cert.system.product }}</td>
+    	<td>{{ cert.software.product }} {{ cert.software.name }}</td>
+    	<td>{{ cert.state }}</td>
+ 	</tr>   
+	{% endfor %}
+    </table>
+{% endblock %}
