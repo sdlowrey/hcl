@@ -1,11 +1,6 @@
 from django.conf.urls.defaults import patterns
-from certification.models import Certification
 from certification.views import CertificationList
 
-cert_info = {
-    'queryset': Certification.objects.all(),
-}
-
-urlpatterns = patterns('certification.views',
+urlpatterns = patterns('',
     (r'^$', CertificationList.as_view()),
 )
