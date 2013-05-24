@@ -1,10 +1,28 @@
 {% extends "base.html" %}
 
+{% block title %}System Certifications{% endblock %}
+
+
 {% block content %}
-    <h2>Systems</h2>
-    <ul>
-        {% for system in object_list %}
-            <li>{{ system.vendor }} {{ system.name }}</li>
+
+<h2>System Certifications</h2>
+
+<table>
+    <tr>
+    	<th>Vendor</th>
+    	<th>Product</th>
+    	<th>Certifications</th>
+    </tr>
+    {% for system in object_list %}
+    <tr>
+        <td>{{ system.vendor }}</td> 
+        <td>{{ system.product }}</td>
+        <td>
+        {% for cert in system.certification_set.all %}
+        	{{ cert.software }}
         {% endfor %}
-    </ul>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}

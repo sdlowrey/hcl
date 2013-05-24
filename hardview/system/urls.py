@@ -1,11 +1,6 @@
 from django.conf.urls.defaults import *
-from django.views.generic import list_detail
-from system.models import System
-
-system_info = {
-    'queryset': System.objects.all(),
-}
+from system.views import SystemList
 
 urlpatterns = patterns('',
-    (r'^$', list_detail.object_list, system_info)
+    (r'^$', SystemList.as_view())
 )
