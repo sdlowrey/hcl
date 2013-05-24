@@ -14,8 +14,9 @@
     	<th>Certifications</th>
     </tr>
     {% for system in object_list %}
+    	{% url system.views.SystemList vendor=system.vendor as vendor_url %}
     <tr>
-        <td>{{ system.vendor }}</td> 
+        <td><a href="{{ vendor_url }}">{{ system.vendor }}</a></td> 
         <td>{{ system.product }}</td>
         <td>
         {% for cert in system.certification_set.all %}
