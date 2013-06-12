@@ -14,6 +14,21 @@ class Hardware(models.Model):
     def __unicode__(self):
         return "{} {}".format(self.vendor.name, self.product)
 
+class PciDevice(Hardware):
+    SIMPLE_TYPES = (    
+        ('video', 'Video Controller'),
+        ('network', 'Network Interface'),
+        ('audio', 'Audio Controller'),
+        ('storage', 'Storage/RAID Controller'),
+        ('usb', 'USB Host Controller'),
+        )
+    removable = models.BooleanField()
+    
+    pciVendor = models.CharField(max_length=4)
+    pciDevice = models.CharField(max_length=4)
+    pciSubvendor = models.CharField(max_length=4, blank=True)
+    pciSubdevice = models.CharField(max_length=4, blank=True)
+
 class System(Hardware):
     """Describes a product, but not a specific instance of that product.  
     Therefore, there are no instance-specific fields like  memory quantity,
@@ -29,24 +44,8 @@ class System(Hardware):
         ('rack4u', '4U Rack Server'),
         ('other', 'Other Form Factor'),
         )
-    processor = models.CharField(max_length=50)
     formFactor = models.CharField(max_length=50, choices=FORM_FACTORS)
-    expandable = models.BooleanField()
+    pciDevice = models.ManyToManyField(PciDevice)
 
 
-class PciDevice(Hardware):
-    SIMPLE_TYPES = (    
-        ('video', 'Video Controller'),
-        ('network', 'Network Interface'),
-        ('audio', 'Audio Controller'),
-        ('storage', 'Storage/RAID Controller'),
-        ('usb', 'USB Host Controller'),
-        )
-    system = models.ManyToManyField(System)
-    removable = models.BooleanField()
-    
-    pciVendor = models.CharField(max_length=4)
-    pciDevice = models.CharField(max_length=4)
-    pciSubvendor = models.CharField(max_length=4, blank=True)
-    pciSubdevice = models.CharField(max_length=4, blank=True)
     
