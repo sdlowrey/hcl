@@ -1,35 +1,38 @@
 from django.db import models
+from annotation.models import Annotation
 
 class Vendor(models.Model):
     name = models.CharField(max_length=50)
 
     def __unicode__(self):
         return self.name
-    
+
 class Hardware(models.Model):
     vendor = models.ForeignKey(Vendor)
     product = models.CharField(max_length=50)
-    endOfLife = models.BooleanField()
-
+    released = models.DateField()
+    ended = models.DateField()
+    note = models.ManyToManyField(Annotation)
+    
     def __unicode__(self):
         return "{} {}".format(self.vendor.name, self.product)
 
 class PciDevice(Hardware):
-    SIMPLE_TYPES = (    
-        ('video', 'Video Controller'),
+    PRIMARY_FUNCTIONS = (    
+        ('video',   'Video Controller'),
         ('network', 'Network Interface'),
-        ('audio', 'Audio Controller'),
-        ('storage', 'Storage/RAID Controller'),
-        ('usb', 'USB Host Controller'),
+        ('audio',   'Audio Controller'),
+        ('storage', 'Storage Controller'),
+        ('usb',     'USB Host Controller'),
         )
     removable = models.BooleanField()
-    
+    primaryFunction = models.CharField(max_length=10, choices=PRIMARY_FUNCTIONS)
     pciVendor = models.CharField(max_length=4)
     pciDevice = models.CharField(max_length=4)
     pciSubvendor = models.CharField(max_length=4, blank=True)
     pciSubdevice = models.CharField(max_length=4, blank=True)
 
-class System(Hardware):
+class Computer(Hardware):
     """Describes a product, but not a specific instance of that product.  
     Therefore, there are no instance-specific fields like  memory quantity,
     serial number, or SKU.
@@ -45,7 +48,24 @@ class System(Hardware):
         ('other', 'Other Form Factor'),
         )
     formFactor = models.CharField(max_length=50, choices=FORM_FACTORS)
-    pciDevice = models.ManyToManyField(PciDevice)
+    integratedPciDevice = models.ManyToManyField(PciDevice)
 
+class Peripheral(Hardware):
+    PRIMARY_FUNCTIONS = (
+        ('storage', 'Storage'),
+        ('smartcard', 'Smart Card Reader'),
+        ('printer', 'Printer'),
+        ('webcam', 'Video Camera'),
+        ('touch', 'Touch Screen'),
+        ('pedal', 'Foot Pedal')
+    )
+    primaryFunction = models.CharField(max_length=10, choices=PRIMARY_FUNCTIONS)
+
+class SystemConfiguration(models.Model):
+    """A combination of a computer and zero or more removable devices that
+    make up a tested system."""
+    computer = models.ForeignKey(Computer)
+    pciDevice = models.ManyToManyField(PciDevice)
+    note = models.ManyToManyField(Annotation)
 
     
