@@ -16,7 +16,7 @@ class Certification(models.Model):
     state = models.CharField(max_length=20, choices=CERT_STATES)
     system = models.ForeignKey(SystemConfiguration)
     software = models.ForeignKey(SoftwareUpdate)
-    note = models.ManyToManyField(Annotation)
+    note = models.ManyToManyField(Annotation, blank=True)
     date = models.DateField()
     
     def __unicode__(self):

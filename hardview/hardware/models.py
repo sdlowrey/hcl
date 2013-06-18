@@ -31,7 +31,7 @@ class PciDevice(Hardware):
     pciDevice = models.CharField(max_length=4)
     pciSubvendor = models.CharField(max_length=4, blank=True)
     pciSubdevice = models.CharField(max_length=4, blank=True)
-
+    
 class Computer(Hardware):
     """Describes a product, but not a specific instance of that product.  
     Therefore, there are no instance-specific fields like  memory quantity,
@@ -66,6 +66,8 @@ class SystemConfiguration(models.Model):
     make up a tested system."""
     computer = models.ForeignKey(Computer)
     pciDevice = models.ManyToManyField(PciDevice)
-    note = models.ManyToManyField(Annotation)
+    description = models.CharField(max_length=20)
+    note = models.ManyToManyField(Annotation, blank=True)
 
-    
+    def __unicode__(self):
+        return "{} {} {}".format(self.computer.vendor, self.computer.product, self.description)
