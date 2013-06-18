@@ -12,6 +12,6 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^system/', include('system.urls')),
+    url(r'^hardware/', include('hardware.urls')),
     url(r'^certification/', include('certification.urls')),
 )
