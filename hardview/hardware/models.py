@@ -10,9 +10,9 @@ class Vendor(models.Model):
 class Hardware(models.Model):
     vendor = models.ForeignKey(Vendor)
     product = models.CharField(max_length=50)
-    released = models.DateField()
-    ended = models.DateField()
-    note = models.ManyToManyField(Annotation)
+    released = models.DateField(blank=True, null=True)
+    ended = models.DateField(blank=True, null=True)
+    note = models.ManyToManyField(Annotation, blank=True)
     
     def __unicode__(self):
         return "{} {}".format(self.vendor.name, self.product)
@@ -48,7 +48,7 @@ class Computer(Hardware):
         ('other', 'Other Form Factor'),
         )
     formFactor = models.CharField(max_length=50, choices=FORM_FACTORS)
-    integratedPciDevice = models.ManyToManyField(PciDevice)
+    integratedPciDevice = models.ManyToManyField(PciDevice, blank=True)
 
 class Peripheral(Hardware):
     PRIMARY_FUNCTIONS = (
