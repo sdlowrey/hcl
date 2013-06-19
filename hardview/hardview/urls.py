@@ -15,3 +15,5 @@ urlpatterns = patterns('',
     url(r'^hardware/', include('hardware.urls')),
     url(r'^certification/', include('certification.urls')),
 )
+
+handler500 = 'hardview.views.custom500'
