@@ -12,4 +12,4 @@ class SoftwareUpdate(models.Model):
     name = models.CharField(max_length=20)
 
     def __unicode__(self):
-        return "{} {}".format(self.product.name, self.name)
+        return "{} {}-{}".format(self.product.name, self.product.version, self.name)
